@@ -1,0 +1,24 @@
+Configuración del Entorno
+
+1. Clonación y Dependencias
+# Instalar dependencias
+composer install
+# Regenerar el autoload si es necesario
+composer dump-autoload
+
+2. Base de Datos
+Importar el archivo schema.sql (o el dump actual) en phpMyAdmin.
+
+Configurar las credenciales en config/database.php.
+
+
+3. Virtual Host
+Para que el proyecto funcione con la URL http://wally.test, se configuró un Virtual Host en Apache apuntando a la carpeta /public.
+
+
+Endpoints Disponibles
+
+Método	Endpoint	Descripción
+GET	/api/assets	Lista todos los activos con sus precios actuales.
+POST	/api/users	Registra un nuevo usuario con balance inicial de $1000.
+POST	/api/login	Valida credenciales y (próximamente) devuelve un Token JWT.
