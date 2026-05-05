@@ -1,25 +1,32 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use PDO;
 
-class Asset extends Model {
-    protected $table = 'assets';
-    public $timestamps = false;
-    protected $fillable = ['name', 'current_price', 'last_update'];
+class Asset {
+    // Listar todos los activos
+    public static function getAll() {
+        $db = DB::getConnection();
+        $stmt = $db->query("SELECT * FROM assets");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-    
-    //Función requerida por el punto 1 del PDF
+    // Actualizar el precio de un activo
+    public static function updatePrice($id, $newPrice) {
+        $db = DB::getConnection();
+        $stmt = $db->prepare("UPDATE assets SET current_price = :price, last_update = NOW() WHERE id = :id");
+        return $stmt->execute([
+            ':price' => $newPrice,
+            ':id' => $id
+        ]);
+    }
+
+    // La función matemática obligatoria del PDF
     public static function variarPrecioPorTiempo($precioActual, $timestampUltimaVez, $volatilidadPorSegundo = 0.05) {
-        // 1. Calcular segundos pasados 
-        $tiempoPasado = time() - strtotime($timestampUltimaVez); 
-        
+        $tiempoPasado = time() - strtotime($timestampUltimaVez);
         if ($tiempoPasado <= 0) return $precioActual;
 
-        // 2. Cambio aleatorio entre -1.0 y 1.0
         $direccion = mt_rand(-100, 100) / 100;
-
-        // 3. El cambio total depende del tiempo
         $delta = $direccion * $volatilidadPorSegundo * $tiempoPasado;
 
         return $precioActual + $delta;

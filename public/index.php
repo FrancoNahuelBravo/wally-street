@@ -1,18 +1,32 @@
 <?php
-date_default_timezone_set('America/Argentina/Buenos_Aires'); //Si no tengo errores con la hora
 use Slim\Factory\AppFactory;
-
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../config/database.php'; // Mi conexión a DB
 
+date_default_timezone_set('America/Argentina/Buenos_Aires');
 $app = AppFactory::create();
 
-// IMPORTANTE: Para que Slim lea el Body de los POST (JSON)
+// 1. Configuración de BasePath (Como uso wally.test, Slim lo detecta solo )
+$app->addRoutingMiddleware();
+
+// 2. Middlewares (Deben estar ANTES de las rutas y del run)
 $app->addBodyParsingMiddleware();
 
-// Cargo las rutas
-// En public/index.php
+// Middleware para manejar CORS y headers (El del profe)
+$app->add(function ($request, $handler) {
+    $response = $handler->handle($request);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE')
+        ->withHeader('Content-Type', 'application/json');
+});
+
+// Middleware de errores (Muy importante para ver qué falla en consola)
+$app->addErrorMiddleware(true, true, true);
+
+// 3. Carga de rutas
 $routes = require __DIR__ . '/../routes/api.php';
 $routes($app);
 
+// 4. EL BOTÓN DE PLAY (Siempre al final)
 $app->run();
