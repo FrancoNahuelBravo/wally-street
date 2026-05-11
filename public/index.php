@@ -8,7 +8,7 @@ $app = AppFactory::create();
 // 1. Configuración de BasePath (Como uso wally.test, Slim lo detecta solo )
 $app->addRoutingMiddleware();
 
-// 2. Middlewares (Deben estar ANTES de las rutas y del run)
+// 2. Middlewares
 $app->addBodyParsingMiddleware();
 
 // Middleware para manejar CORS y headers (El del profe)

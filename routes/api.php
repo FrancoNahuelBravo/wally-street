@@ -33,6 +33,6 @@ return function ($app): void {
             // --- RUTA ADMIN ---
             $group->put('/assets', [AssetController::class, 'updatePrices']);
 
-        })->add(new AuthMiddleware()); // Aplicamos el guardia aquí
+        })->add(new AuthMiddleware());
     });
 };
