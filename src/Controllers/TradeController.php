@@ -35,7 +35,7 @@ class TradeController {
             return $this->jsonRes($response, ["error" => "Saldo insuficiente. Costo: $totalCost, Tu saldo: {$user['balance']}"], 409);
         }
 
-        // 3. OPERACIÓN (Usamos una transacción SQL por seguridad)
+        // 3. OPERACIÓN (Uso transacción SQL por seguridad)
         try {
             $db->beginTransaction();
 
@@ -138,12 +138,11 @@ public function getHistory(Request $request, Response $response) {
     $userId = $request->getAttribute('user_id'); // El ID que viene del Middleware
     $db = \App\Models\DB::getConnection();
     
-    // Traemos todas las transacciones de este usuario, las más nuevas primero
+    // Traer todas las transacciones de este usuario, las más nuevas primero
     $stmt = $db->prepare("SELECT * FROM transactions WHERE user_id = :id ORDER BY transaction_date DESC");
     $stmt->execute([':id' => $userId]);
     $history = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-    // Usamos el helper que ya tenías para responder en JSON
     return $this->jsonRes($response, $history, 200);
 }
 

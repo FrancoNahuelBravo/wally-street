@@ -4,26 +4,41 @@ Este proyecto es una API REST desarrollada para  **Seminario de Lenguajes (PHP)*
 
 ## Tecnologías Utilizadas
 
-* **PHP 8.x**: Lenguaje core del proyecto.
-* **Slim Framework 4**: Micro-framework para el manejo de rutas y peticiones HTTP.
-* **Eloquent ORM (Illuminate/Database)**: Para el mapeo de objetos a la base de datos MySQL.
-* **Composer**: Gestor de dependencias de PHP.
-* **MySQL**: Motor de base de datos relacional.
-* **XAMPP**: Entorno de desarrollo local (Apache/MySQL).
-* **Postman**: Herramienta para el testeo de los endpoints.
+### Backend
+* **PHP 8.x**: Lenguaje principal del lado del servidor.
+* **Slim Framework 4**: Micro-framework para la creación de APIs REST.
+* **Composer**: Gestor de dependencias (encargado del Autoload PSR-4).
+* **PDO (PHP Data Objects)**: Interfaz para una conexión segura y eficiente con la base de datos.
 
-## 📂 Estructura del Proyecto
+### Base de Datos
+* **MySQL**: Sistema de gestión de bases de datos relacionales.
+* **XAMPP**: Entorno de desarrollo local (servidor Apache + MariaDB/MySQL).
 
-Siguiendo el patrón de diseño **MVC (Modelo-Vista-Controlador)** y las recomendaciones de la cátedra:
+### Herramientas y Estándares
+* **Postman**: Suite de herramientas para el testeo y documentación de los endpoints.
+* **Arquitectura MVC**: Organización del código separando Modelos, Vistas y Controladores.
+* **PSR-7 / PSR-15**: Estándares de interfaces HTTP y Middlewares.
+* **JSON**: Formato de intercambio de datos entre cliente y servidor.
+
+
+
+## Características
+* **Autenticación:** Sistema de seguridad basado en **Bearer Tokens** con expiración de 5 minutos.
+* **Mercado Dinámico:** Algoritmo de fluctuación de precios (Admin).
+* **Persistencia:** Base de datos MySQL mediante PDO (Singleton).
+* **CORS:** Configurado para integración con frontend en React.
+
+---
+
+## 📁 Estructura del Proyecto
 
 ```text
 wally-street/
-├── config/             # Configuración de base de datos y credenciales
-├── public/             # Único punto de entrada (index.php) y .htaccess
-├── routes/             # Definición de rutas (api.php)
-├── src/                # Lógica de la aplicación
-│   ├── Controllers/    # Manejo de la lógica de las peticiones
-│   ├── Models/         # Representación de las tablas de la DB
-│   └── Middleware/     # Filtros de seguridad (Próximamente JWT)
-├── vendor/             # Dependencias instaladas por Composer
-└── composer.json       # Definición de paquetes y autoloading
+├── public/                 # Punto de entrada (index.php) y .htaccess
+├── routes/                 # Definición de rutas (api.php)
+├── src/
+│   ├── Controllers/        # Lógica de negocio (User, Asset, Trade, Portfolio)
+│   ├── Middleware/         # Filtros de seguridad (AuthMiddleware)
+│   └── Models/             # Conexión DB y Clases (User, Asset, DB)
+├── composer.json           # Dependencias y Autoload PSR-4
+└── .gitignore              # Archivos excluidos (vendor, .env)

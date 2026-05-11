@@ -110,8 +110,6 @@ class UserController {
 
     // POST /logout - Borrar el token
     public function logout(Request $request, Response $response) {
-        // Aquí el middleware ya validó al usuario, solo limpiamos el token en la DB
-        // (Por ahora simplificado, luego lo vinculamos al usuario logueado)
         return $this->jsonRes($response, ["mensaje" => "Sesión cerrada"], 200);
     }
 

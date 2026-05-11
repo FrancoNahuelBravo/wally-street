@@ -16,21 +16,17 @@ class AuthMiddleware {
         $stmt->execute([':token' => $token]);
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        // 1. Validar si el token existe y no expiró[cite: 1]
+        // 1. Validar si el token existe y no expiró
         if (!$user || strtotime($user['token_expired_at']) < time()) {
             $response = new Response();
             $response->getBody()->write(json_encode(["error" => "No autorizado o sesión expirada"]));
             return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
         }
 
-        // 2. "Estirar" la vida del token 5 minutos más[cite: 1]
+        // 2. "Estirar" la vida del token 5 minutos más
         $newExpiration = date('Y-m-d H:i:s', strtotime('+5 minutes'));
         $update = $db->prepare("UPDATE users SET token_expired_at = :exp WHERE id = :id");
         $update->execute([':exp' => $newExpiration, ':id' => $user['id']]);
-
-        
-        // En AuthMiddleware.php, antes del return final:
-        // Inyectamos el ID del usuario en la petición para que el controlador lo use
         $request = $request->withAttribute('user_id', $user['id']); 
 
 return $handler->handle($request);

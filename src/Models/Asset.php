@@ -21,7 +21,7 @@ class Asset {
         ]);
     }
 
-    // La función matemática obligatoria del PDF
+    // La función matemática del TP
     public static function variarPrecioPorTiempo($precioActual, $timestampUltimaVez, $volatilidadPorSegundo = 0.05) {
         $tiempoPasado = time() - strtotime($timestampUltimaVez);
         if ($tiempoPasado <= 0) return $precioActual;

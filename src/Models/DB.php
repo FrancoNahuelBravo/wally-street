@@ -9,7 +9,7 @@ class DB {
 
     public static function getConnection() {
         if (!self::$connection) {
-            // Ajustá estos datos a tu XAMPP local
+            // Ajustar estos datos al XAMPP local
             $host = 'localhost';
             $dbname = 'seminariophp';
             $user = 'root'; 

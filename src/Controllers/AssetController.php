@@ -24,8 +24,6 @@ class AssetController {
                 $asset['last_update']
             );
 
-            // --- LA CORRECCIÓN VA ACÁ ---
-            // Usamos max() para que si el precio baja de 0, se quede clavado en 0.01
             $nuevoPrecio = max(0.01, $nuevoPrecio);
             
             Asset::updatePrice($asset['id'], round($nuevoPrecio, 2));

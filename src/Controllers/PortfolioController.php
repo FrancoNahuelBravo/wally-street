@@ -13,7 +13,7 @@ class PortfolioController {
         $userId = $request->getAttribute('user_id'); // Viene del Middleware
         $db = DB::getConnection();
 
-        // Buscamos los activos del usuario y traemos el precio actual del mercado para calcular el total
+        // Buscar los activos del usuario y traer el precio actual del mercado para calcular el total
         $sql = "SELECT a.id as asset_id, a.name, p.quantity, a.current_price, 
                        (p.quantity * a.current_price) as total_value_usd
                 FROM portfolio p 
@@ -52,7 +52,7 @@ class PortfolioController {
             return $response->withStatus(409);
         }
 
-        // 3. Si es 0, borramos el registro
+        // 3. Si es 0, borro el registro
         $del = $db->prepare("DELETE FROM portfolio WHERE user_id = :u AND asset_id = :a");
         $del->execute([':u' => $userId, ':a' => $assetId]);
 
